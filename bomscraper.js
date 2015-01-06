@@ -7,7 +7,7 @@ bs.urls = {
 	'townsville7day': 'http://www.bom.gov.au/cgi-bin/NexGenFWS/getSevenDayPrecisForecastForLocation.pl?aac=QLD_PT022',
 };
 
-bs.fetch7day = function(cb){
+bs.fetch7daybasic = function(cb){
 	r(bs.urls.townsville7day, function (error, response, body) {
 		$ = cheerio.load(body);
 		// convert table into an array of text from inside each td

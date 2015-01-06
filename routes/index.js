@@ -7,8 +7,8 @@ router.get('/', function(req, res) {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/7day',function(req,res){
-	bs.fetch7day(function(d){ res.json(d) });
+router.get('/7daybasic',function(req,res){
+	bs.fetch7daybasic(function(d){ res.json(d) });
 })
 
 module.exports = router;
