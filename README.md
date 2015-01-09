@@ -17,11 +17,10 @@ Making Requests
 The following request types are supported
  - basic
 
-Example Requests:
+Example Requests:<BR>
 HTTP<BR>
-http://192.168.1.8:5001/basic?location=townsville
-
-TCP
+http://192.168.1.8:5001/basic?location=townsville<BR>
+TCP<BR>
 basic?location=townsville
 
 TCP requests have the ability to return a string from the object gathered from the data scraping module. You would normally get an object back with multiple layers of depth. Its easiest to view this object first using a web request to work out your path.
