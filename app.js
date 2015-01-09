@@ -8,6 +8,8 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
+var tcpserver = require('./tcpserver');
+
 var app = express();
 
 // view engine setup
@@ -58,8 +60,8 @@ app.use(function(err, req, res, next) {
 
 var http = require('http');
 var server = http.createServer(app);
-server.listen(3000);
-console.log("server started on port 3000");
+server.listen(5001);
+console.log("express server started on port 5001");
 
 
 module.exports = app;
