@@ -18,7 +18,7 @@ The following request types are supported
  - basic
 
 Example Requests:
-HTTP
+HTTP<BR>
 http://192.168.1.8:5001/basic?location=townsville
 
 TCP
