@@ -36,5 +36,5 @@ This will return tomorrows forecast.
 
 Updates
 ---------------
-01/01/2015 - Updated to support all the locations on the bureau of meteorology website, over 680 locations. Simple html table output of this list to find corresponding code. few other code fixes.
+10/01/2015 - Updated to support all the locations on the bureau of meteorology website, over 680 locations. Simple html table output of this list to find corresponding code. few other code fixes.
 
