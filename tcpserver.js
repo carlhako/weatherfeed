@@ -1,5 +1,6 @@
 var bs = require('./bomscraper');
 var _ = require('underscore');
+var moment = require('moment');
 
 var tcpserver = {};
 
@@ -13,9 +14,9 @@ net.createServer(function (socket) {
   // Handle incoming messages from clients.
   socket.on('data', function (data) {
     var msg = data.toString();
-	console.log('message received: '+msg);
+	console.log(moment().format('YYYY-MM-DD HH:mm:ss')+' message received: '+msg);
 	// check if the message is a request
-	if (/^req=/.test(msg)) {
+	if (/state=/.test(msg) && /location=/.test(msg)) {
 		msg = msg.split(/&/); // requests are kind of like a get request, break it up on each key/value pair.
 		var req = {};
 		console.log(msg);
@@ -25,14 +26,15 @@ net.createServer(function (socket) {
 		})
 		console.log(req);
 		// check for valid request
-		if ('req' in req && 'location' in req);
-		bs.fetch(req['req'],req['location'],function(data){tcpserver.basic(socket,req,data);});
+		if ('state' in req && 'location' in req) {
+			bs.fetch(req['state'],req['location'],function(data){tcpserver.forecast(socket,req,data);});
+		}
 	} else console.log('non request received');
   });
 }).listen(5000);
 
 // process and send back data for basic weather info
-tcpserver.basic = function(socket,req,data) {
+tcpserver.forecast = function(socket,req,data) {
 	if ('path' in req) {
 		var path = req['path'].split(/\./);
 		var returnData = data; // make a ref to data top level
