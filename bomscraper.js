@@ -89,12 +89,13 @@ bs.fetch.forecastDetailed = function(cb) {
 	request(bs.options.forecastDetailedUrl,function(err,data){
 		var $ = cheerio.load(data.body)
 		// capture rainfall
-		var rainfallPeriods = $('h3:contains("Rainfall")').eq(0).next().find("tr").eq(0).find("th").map(function(index,el){ cheerio.load(this).text() })
-		console.log(rainfallPeriods);
+		var rainfallPeriods = $('h3:contains("Rainfall")').eq(0).next().find("tr").eq(0).find("th").map(function(index,el){ return $(this).text() }).get()
 		
-		//var railfallValues = $('h3:contains("Rainfall")').eq(0).next().find("tr").map(function(index,el){ return cheerio.load(el).find('td,th').map(function(i,td){ return td.innerHTML }) });
+		var rainfallValues = $('h3:contains("Rainfall")').eq(0).next().find("tr").map(function(index,el){ return $(this).find('td,th').map(function(i,td){ return $(this).text() }).get() }).get();
+		console.log(rainfallValues);
 		
-		//cb([rainfallPeriods]);
+		
+		cb([rainfallPeriods,rainfallValues]);
 		
 	})
 }
