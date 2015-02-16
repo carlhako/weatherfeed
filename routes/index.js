@@ -8,7 +8,10 @@ router.get('/', function(req, res) {
 });
 
 router.get('/forecast',function(req,res){
-	bs.fetch(req.param('state').toUpperCase(),req.param('location'),function(d){ res.json(d) });
+	bs.fetch.forecast(req.param('state').toUpperCase(),req.param('location'),function(d){ res.json(d) });
+})
+router.get('/forecastDetailed',function(req,res){
+	bs.fetch.forecastDetailed(function(d){ res.json(d) });
 })
 
 router.get('/bs',function(req,res){
