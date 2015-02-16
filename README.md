@@ -19,15 +19,15 @@ Making Requests
 ---------------
 Example Requests:<BR>
 HTTP<BR>
-http://192.168.1.8:5001/state=qld&location=Townsville<BR><BR>
+http://192.168.1.8:5001/forecast?state=qld&location=Townsville<BR><BR>
 
 TCP<BR>
-state=qld&location=Townsville
+forecast?state=qld&location=Townsville
 
 TCP requests have the ability to return a single value from within the object that is normally returned via the http method.
 example request for tomorrows forecast.
 
-state=qld&location=Townsville&path=weather.0
+forecast?state=qld&location=Townsville&path=weather.0
 
 This will return tomorrows forecast.
 
