@@ -12,7 +12,7 @@ bs = {
 			data: {},
 			cacheFor: 60*60*1000, // keep data for 60 minutes.
 		},
-		forecastDetails: {
+		forecastDetailed: {
 			epoch: 0,
 			data: {},
 			cacheFor: 60*60*1000, // keep data for 60 minutes.
@@ -34,10 +34,11 @@ bs = {
 };
 
 bs.fetch = {};
+		// download latest forecast
 bs.fetch.forecast = function(state,loc,cb){
+	// decide if cache is to be used
 	if ( !(state in bs.cache.forecast.data) || (state in bs.cache.forecast.data && (moment().valueOf() - bs.cache.forecast.epoch[state])) > bs.cache.forecast.cacheFor) {
 		console.log('fetching fresh data for: '+state);
-		// download latest forecast
 		ftp.get('ftp://ftp2.bom.gov.au/anon/gen/fwo/'+bs.options.forecastUrls[state], bs.options.forecastUrls[state], function (err, res) {
 			if (err !== null) console.log('error downloading data');
 			else { 
@@ -86,18 +87,54 @@ bs.process.forecast = function(file,state,loc,cb){
 }
 
 bs.fetch.forecastDetailed = function(cb) {
-	request(bs.options.forecastDetailedUrl,function(err,data){
-		var $ = cheerio.load(data.body)
-		// capture rainfall
-		var rainfallPeriods = $('h3:contains("Rainfall")').eq(0).next().find("tr").eq(0).find("th").map(function(index,el){ return $(this).text() }).get()
-		
-		var rainfallValues = $('h3:contains("Rainfall")').eq(0).next().find("tr").map(function(index,el){ return $(this).find('td,th').map(function(i,td){ return $(this).text() }).get() }).get();
-		console.log(rainfallValues);
-		
-		
-		cb([rainfallPeriods,rainfallValues]);
-		
-	})
+	console.log('detailed forcast data requested');
+	returnObj = {};
+	// decide if fresh data needs to be pulled or use cache
+	if (bs.cache.forecastDetailed.epoch == 0 || ( (moment().valueOf()-bs.cache.forecastDetailed.epoch) > bs.cache.forecastDetailed.cacheFor)) {
+		request(bs.options.forecastDetailedUrl,function(err,data){
+			console.log('fetching fresh detailed forcast data');
+			bs.cache.forecastDetailed.epoch = moment().valueOf();
+			bs.cache.forecastDetailed.data = data;
+			bs.fetchFromCache.forecastDetailed(cb);
+		})
+	} else { bs.fetchFromCache.forecastDetailed(cb); }
 }
+
+bs.fetchFromCache.forecastDetailed = function(cb) {
+	// create cheerio object
+	var $ = cheerio.load(bs.cache.forecastDetailed.data.body);
+	
+	// populate json object to be returned. 
+	returnObj.rainfall = tableToObj('Rainfall');
+	returnObj.temp = tableToObj('Temperatures');
+	returnObj['significant weather event'] = tableToObj('Significant Weather');
+	returnObj['humidity and wind'] = tableToObj('Humidity & Wind');	
+	
+	// return json object
+	cb(returnObj);
+		
+	// this function takes in a heading from the webpage and processes the preceding table taking all the values out and into an object
+	function tableToObj(tableHeading) {
+		var r = {};
+		var dates = $('.pointer').map(function(i,val){ return $(this).text() })
+		var rainfallValues = $('h3:contains("'+tableHeading+'")').map(function(dateI,tableEl){
+			var curDate = dates[dateI];
+			var values = $(tableEl).next().find("tr").map(function(index,el){ return $(this).find('td,th').map(function(i,td){ return $(this).text() }) })
+			var periods = values.splice(0,1)[0].get();
+			r[curDate] = {};
+			_.each(values,function(v){
+				v = v.get();
+				r[curDate][v[0]] = {};
+				_.each(v,function(val,i){
+					if (i>0){
+						r[curDate][v[0]][periods[i]] = val;
+					}
+				})
+			})
+		})
+		return r;
+	}
+}
+
 
 module.exports = bs;
