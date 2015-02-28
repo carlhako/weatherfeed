@@ -3,6 +3,7 @@ weatherfeed
 
 NodeJS service providing weather data as JSON or strings. Data is currently scraped from
 - BOM API (Australian Weather Forecast)
+- BOM Detailed Forecast
 
 This code has primarily been written for a project of mine. I have an arduino, ESP8266 and LCD screen which will be displaying this data. This can easily be used tho to provide weather data for anything.
 
