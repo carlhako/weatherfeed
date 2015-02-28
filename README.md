@@ -11,6 +11,9 @@ Requests are cached for 1 hour (configurable) and are accessable via tcp or http
 2 types of forecast data can be returned. simple and detailed. Both contain future 7 days but the detailed includes humidity, rain prediction etc.
 See examples on how to retreive each.
 
+HTTP server runs on port 5001
+TCP server runs on port 5000
+
 Getting Started
 ---------------
 1. Make sure you have nodejs installed 
@@ -36,12 +39,12 @@ forecast/qld/townsville/forecast_0
 
 To Do
 --------
-Change detailed forecast object ot an array type, this will allow the arduino to access detailed forecast.
+Change detailed forecast object to an array type, this will allow the arduino to access detailed forecast.
 Scrape warnings and cyclone warning centre data.
 
 
 Updates
 ---------------
-28/02/2015 - Updated to scrape detailed forecast using cheerio. fixed a few caching issues and updated functions top support the new version of express which dropped req.param() function. 
-16/02/2015 - Scrapped most of the previous code where the BOM website was scraped and replaced with data that processes the BOM's provided API. This should future proof the code and is not sensative to UI updated to the website.
-10/01/2015 - Updated to support all the locations on the bureau of meteorology website, over 680 locations. Simple html table output of this list to find corresponding code. few other code fixes.
+28/02/2015 - Updated to scrape detailed forecast using cheerio. fixed a few caching issues and updated functions top support the new version of express which dropped req.param() function. <BR>
+16/02/2015 - Scrapped most of the previous code where the BOM website was scraped and replaced with data that processes the BOM's provided API. This should future proof the code and is not sensative to UI updated to the website.<BR>
+10/01/2015 - Updated to support all the locations on the bureau of meteorology website, over 680 locations. Simple html table output of this list to find corresponding code. few other code fixes.<BR>
