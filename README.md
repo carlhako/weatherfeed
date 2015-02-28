@@ -25,6 +25,9 @@ Making Requests
 ---------------
 Example Requests:<BR>
 HTTP<BR>
+
+The state and town is used to generate the url to screape the bom website. I would say most states and locations exist. If you get an error when trying to retrieve your state and town goto the bom website and try to find your location.
+
 http://192.168.1.8:5001/forecastDetailed/qld/townsville<BR>
 http://192.168.1.8:5001/forecast/qld/townsville<BR>
 <BR>
@@ -41,6 +44,7 @@ To Do
 --------
 Change detailed forecast object to an array type, this will allow the arduino to access detailed forecast.
 Scrape warnings and cyclone warning centre data.
+Generate an index page which will grab the national forecast data, using this a list of supported state and towns can easily be listed with urls to simple and detailed forecast.
 
 
 Updates
