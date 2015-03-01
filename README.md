@@ -41,13 +41,13 @@ forecastdetailed/qld/townsville
 
 TCP requests have the ability to return a single value from within the json object. This allows an arduino to fetch a single value without processing the json.
 
-example request for todays date
+example request for todays date<BR>
 forecastDetailed/qld/townsville/rainfall/dates/0
 
-this will return the chance of any rain at 1pm today.
+this will return the chance of any rain at 1pm today.<BR>
 forecastDetailed/qld/townsville/rainfall/data/0/Chance of any rain/1:00 PM
 
-fetch tomorrows max temperature
+fetch tomorrows max temperature<BR>
 forecast/qld/townsville/max_1
 
 To Do
