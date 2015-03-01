@@ -35,6 +35,8 @@ http://192.168.1.8:5001/forecast/qld/townsville<BR>
 
 TCP<BR>
 
+Port 5000 should be opened up to accept TCP connections. Once established just send through a plain string like the following examples.
+
 To get a all the detailed forecast in JSON.
 
 forecastdetailed/qld/townsville
