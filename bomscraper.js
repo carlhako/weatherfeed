@@ -127,8 +127,8 @@ bs.fetchFromCache.forecastDetailed = function(params,cb) {
 	// this function takes in a heading from the webpage and processes the preceding table taking all the values out and into an object
 	function tableToObj(tableHeading) {
 		var r = {};
-		var dates = $('.pointer').map(function(i,val){ return $(this).text() })
-		var rainfallValues = $('h3:contains("'+tableHeading+'")').map(function(dateI,tableEl){
+		var dates = $('.pointer').map(function(i,val){ return $(this).text() }).get()
+		$('h3:contains("'+tableHeading+'")').each(function(dateI,tableEl){
 			var curDate = dates[dateI];
 			var values = $(tableEl).next().find("tr").map(function(index,el){ return $(this).find('td,th').map(function(i,td){ return $(this).text() }) })
 			var periods = values.splice(0,1)[0].get();
@@ -143,7 +143,15 @@ bs.fetchFromCache.forecastDetailed = function(params,cb) {
 				})
 			})
 		})
-		return r;
+		//now convert the object into an array of objects.
+		var rArray = { data: [], dates: dates };
+		_.each(dates,function(date){ // dates should be in order already
+			if (date in r){
+				r[date].date = date; // create an internal property with the date
+				rArray.data.push(r[date]);
+			}
+		})
+		return rArray; // this an be changed to return r instead to get an object of objects instead of array of objects.
 	}
 }
 

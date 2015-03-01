@@ -34,12 +34,21 @@ http://192.168.1.8:5001/forecast/qld/townsville<BR>
 <BR>
 
 TCP<BR>
+
+To get a all the detailed forecast in JSON.
+
 forecastdetailed/qld/townsville
 
 TCP requests have the ability to return a single value from within the json object. This allows an arduino to fetch a single value without processing the json.
-example request for tomorrows forecast.
 
-forecast/qld/townsville/forecast_0
+example request for todays date
+forecastDetailed/qld/townsville/rainfall/dates/0
+
+this will return the chance of any rain at 1pm today.
+forecastDetailed/qld/townsville/rainfall/data/0/Chance of any rain/1:00 PM
+
+fetch tomorrows max temperature
+forecast/qld/townsville/max_1
 
 To Do
 --------

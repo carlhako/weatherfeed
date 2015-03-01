@@ -17,7 +17,11 @@ net.createServer(function (socket) {
 	console.log(moment().format('YYYY-MM-DD HH:mm:ss')+' message received: '+msg);
 	
 	var req = msg.split(/\//);
-	req = _.map(req,function(r){ return r.trim().toUpperCase() });
+	req = _.map(req,function(r,i){ 
+		r = r.trim();
+		if (i < 3) r = r.toUpperCase();
+		return r
+	});
 	console.log(req.length,req);
 
 	if (req.length >= 3){
@@ -38,14 +42,18 @@ tcpserver.forecast = function(socket,req,data) {
 	console.log('forecast received');
 	if (req.length > 3) {
 		var path = req.slice(3)
-		path = _.map(path,function(p){ return p.toLowerCase() });
+		//path = _.map(path,function(p){ return p.toLowerCase() });
 		console.log(path);
 		var returnData = data; // make a ref to data top level
 		for (var i=0; i<path.length; i++) {
-			if (path[i] in returnData) returnData = returnData[path[i]]; // transcend into the data object 1 level at a time
+			if (path[i] in returnData) {
+				returnData = returnData[path[i]]; // transcend into the data object 1 level at a time
+				console.log('traversing into '+path[i]);
+			}
 			if (typeof returnData === 'string') { break }
 		}
-		socket.write(returnData);
+		if (typeof returnData === "string") socket.write(returnData);
+		else socket.write(JSON.stringify(returnData));
 		console.log('sent back: '+returnData);
 	} else {
 		if (typeof data === 'object') { // if the data is an object it needs to be stringified
