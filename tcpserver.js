@@ -17,20 +17,27 @@ net.createServer(function (socket) {
 	console.log(moment().format('YYYY-MM-DD HH:mm:ss')+' message received: '+msg);
 	
 	var req = msg.split(/\//);
-	req = _.map(req,function(r,i){ 
-		r = r.trim();
-		if (i < 3) r = r.toUpperCase();
-		return r
-	});
+	if (req[0].toUpperCase() == 'DATE') {
+		req[0] = req[0].toUpperCase();
+	} else {
+		req = _.map(req,function(r,i){ 
+			r = r.trim();
+			if (i < 3) r = r.toUpperCase();
+			return r
+		});
+	}
 	console.log(req.length,req);
 
-	if (req.length >= 3){
+	if (req.length >= 2){
 		switch (req[0]){
 			case 'FORECAST':
 				bs.fetch.forecast({state:req[1],location:req[2]},function(data){tcpserver.forecast(socket,req,data);});
 			break;
 			case 'FORECASTDETAILED':
 				bs.fetch.forecastDetailed({state:req[1],location:req[2]},function(data){tcpserver.forecast(socket,req,data);});
+			break;
+			case 'DATE':
+				tcpserver.date(socket,req);
 			break;
 		}
 	} else { console.log('tcp server error: request not long enough'); }
@@ -64,6 +71,14 @@ tcpserver.forecast = function(socket,req,data) {
 			console.log('sent back: '+data);
 		}
 	}
+}
+
+tcpserver.date = function(socket,req) {
+	if (req.length > 3) { // if forward slash is used for date format, this fixes it.
+		req[2] = req.slice(2).join('/');
+		console.log(req);
+	}
+	socket.write(moment().add(req[1],'d').format(req[2]));
 }
  
 console.log("TCP server running on port 5000\n");
